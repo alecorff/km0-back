@@ -8,11 +8,11 @@
 		<version>3.5.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.strava</groupId>
+	<groupId>com.kilometre.zero</groupId>
 	<artifactId>dashboard</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<name>dashboard</name>
-	<description>Backend for Strava Dashboard</description>
+	<description>Backend for Kilomètre Zéro Dashboard</description>
 	<url/>
 	<licenses>
 		<license/>

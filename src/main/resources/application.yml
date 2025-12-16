@@ -24,7 +24,7 @@ spring:
             token-name: access_token
             authentication-scheme: query
             client-authentication-scheme: form
-            client-authentication-method: post
+            client-authentication-method: client_secret_post
             client-name: Strava
             redirect-uri: "http://localhost:8080/exchange_token"
             authorization-grant-type: authorization_code
