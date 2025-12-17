@@ -3,6 +3,7 @@ package com.kilometre.zero.service;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.http.HttpEntity;
@@ -120,7 +121,7 @@ public class ActivityService {
             	if (!isRunning(dto)) {
                     continue;
                 }
-            	
+
                 Activity activity = activityMapper.toEntity(dto, athleteId);
                 activityRepository.save(activity);
             }
@@ -138,6 +139,11 @@ public class ActivityService {
 
 	private boolean isRunning(StravaActivity dto) {
     	return RUNNING_TYPES.contains(dto.getSportType());
+    }
+	
+	public List<Activity> getActivitiesForPlanPeriod(Long athleteId, LocalDateTime planStartDate) {
+        LocalDateTime now = LocalDateTime.now();
+        return activityRepository.findByAthleteIdAndStartDateLocalBetween(athleteId, planStartDate, now);
     }
 
 

@@ -23,13 +23,13 @@ public class Activity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private String distance;
+    private Double distance;
 
     @Column(name = "moving_time")
-    private LocalDateTime movingTime;
+    private Integer movingTime;
 
     @Column(name = "total_elevation_gain")
-    private String totalElevationGain;
+    private Double totalElevationGain;
     
     @Column(name = "sport_type")
     private String sportType;
@@ -47,34 +47,37 @@ public class Activity {
     private String maxSpeed;
     
     @Column(name = "average_cadence")
-    private String averageCadence;
+    private Double averageCadence;
     
     @Column(name = "average_watts")
-    private String averageWatts;
+    private Double averageWatts;
     
     @Column(name = "max_watts")
-    private String maxWatts;
+    private Double maxWatts;
     
     @Column(name = "weighted_average_watts")
-    private String weightedAverageWatts;
+    private Double weightedAverageWatts;
     
-    private String kilojoules;
+    private Double kilojoules;
     
     @Column(name = "average_heartrate")
-    private String averageHeartrate;
+    private Double averageHeartrate;
     
     @Column(name = "max_heartrate")
-    private String maxHeartrate;
+    private Double maxHeartrate;
     
     @Column(name = "elev_high")
-    private String elevHigh;
+    private Double elevHigh;
     
     @Column(name = "elev_low")
-    private String elevLow;
+    private Double elevLow;
     
-    private String calories;
+    private Double calories;
     
     private String gear;
+    
+    @Column(name = "session_type")
+    private String sessionType;
 
     // ======== Getters & Setters ========
     
@@ -90,14 +93,14 @@ public class Activity {
 	public String getDescription() { return description; }
 	public void setDescription(String description) { this.description = description; }
 
-	public String getDistance() { return distance; }
-	public void setDistance(String distance) { this.distance = distance; }
+	public Double getDistance() { return distance; }
+	public void setDistance(Double distance) { this.distance = distance; }
 
-	public LocalDateTime getMovingTime() { return movingTime; }
-	public void setMovingTime(LocalDateTime movingTime) { this.movingTime = movingTime; }
+	public Integer getMovingTime() { return movingTime; }
+	public void setMovingTime(Integer movingTime) { this.movingTime = movingTime; }
 
-	public String getTotalElevationGain() { return totalElevationGain; }
-	public void setTotalElevationGain(String totalElevationGain) { this.totalElevationGain = totalElevationGain; }
+	public Double getTotalElevationGain() { return totalElevationGain; }
+	public void setTotalElevationGain(Double totalElevationGain) { this.totalElevationGain = totalElevationGain; }
 
 	public String getSportType() { return sportType; }
 	public void setSportType(String sportType) { this.sportType = sportType; }
@@ -114,37 +117,39 @@ public class Activity {
 	public String getMaxSpeed() { return maxSpeed; }
 	public void setMaxSpeed(String maxSpeed) { this.maxSpeed = maxSpeed; }
 
-	public String getAverageCadence() { return averageCadence; }
-	public void setAverageCadence(String averageCadence) { this.averageCadence = averageCadence; }
+	public Double getAverageCadence() { return averageCadence; }
+	public void setAverageCadence(Double averageCadence) { this.averageCadence = averageCadence; }
 
-	public String getAverageWatts() { return averageWatts; }
-	public void setAverageWatts(String averageWatts) { this.averageWatts = averageWatts; }
+	public Double getAverageWatts() { return averageWatts; }
+	public void setAverageWatts(Double averageWatts) { this.averageWatts = averageWatts; }
 
-	public String getMaxWatts() { return maxWatts; }
-	public void setMaxWatts(String maxWatts) { this.maxWatts = maxWatts; }
+	public Double getMaxWatts() { return maxWatts; }
+	public void setMaxWatts(Double maxWatts) { this.maxWatts = maxWatts; }
 
-	public String getWeightedAverageWatts() { return weightedAverageWatts; }
-	public void setWeightedAverageWatts(String weightedAverageWatts) { this.weightedAverageWatts = weightedAverageWatts; }
+	public Double getWeightedAverageWatts() { return weightedAverageWatts; }
+	public void setWeightedAverageWatts(Double weightedAverageWatts) { this.weightedAverageWatts = weightedAverageWatts; }
 
-	public String getKilojoules() { return kilojoules; }
-	public void setKilojoules(String kilojoules) { this.kilojoules = kilojoules; }
+	public Double getKilojoules() { return kilojoules; }
+	public void setKilojoules(Double kilojoules) { this.kilojoules = kilojoules; }
 
-	public String getAverageHeartrate() { return averageHeartrate; }
-	public void setAverageHeartrate(String averageHeartrate) { this.averageHeartrate = averageHeartrate; }
+	public Double getAverageHeartrate() { return averageHeartrate; }
+	public void setAverageHeartrate(Double averageHeartrate) { this.averageHeartrate = averageHeartrate; }
 
-	public String getMaxHeartrate() { return maxHeartrate; }
-	public void setMaxHeartrate(String maxHeartrate) { this.maxHeartrate = maxHeartrate; }
+	public Double getMaxHeartrate() { return maxHeartrate; }
+	public void setMaxHeartrate(Double maxHeartrate) { this.maxHeartrate = maxHeartrate; }
 
-	public String getElevHigh() { return elevHigh; }
-	public void setElevHigh(String elevHigh) { this.elevHigh = elevHigh; }
+	public Double getElevHigh() { return elevHigh; }
+	public void setElevHigh(Double elevHigh) { this.elevHigh = elevHigh; }
 
-	public String getElevLow() { return elevLow; }
-	public void setElevLow(String elevLow) { this.elevLow = elevLow; }
+	public Double getElevLow() { return elevLow; }
+	public void setElevLow(Double elevLow) { this.elevLow = elevLow; }
 
-	public String getCalories() { return calories; }
-	public void setCalories(String calories) { this.calories = calories; }
+	public Double getCalories() { return calories; }
+	public void setCalories(Double calories) { this.calories = calories; }
 
 	public String getGear() { return gear; }
-	public void setGear(String gear) { this.gear = gear; }    
-   
+	public void setGear(String gear) { this.gear = gear; }
+	
+	public String getSessionType() { return sessionType; }
+	public void setSessionType(String sessionType) { this.sessionType = sessionType; } 
 }

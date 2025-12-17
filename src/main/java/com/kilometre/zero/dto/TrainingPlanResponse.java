@@ -8,6 +8,7 @@ public class TrainingPlanResponse {
 	private UUID planId;
     private String name;
     private TrainingType type;
+    private String goal;
     private String distanceKm;
     private String elevationGain;
     private String location;
@@ -26,7 +27,10 @@ public class TrainingPlanResponse {
     public TrainingType getType() { return type; }
     public void setType(TrainingType type) { this.type = type; }
 
-    public String getDistanceKm() { return distanceKm; }
+    public String getGoal() { return goal; }
+	public void setGoal(String goal) { this.goal = goal; }
+	
+	public String getDistanceKm() { return distanceKm; }
     public void setDistanceKm(String distanceKm) { this.distanceKm = distanceKm; }
 
     public String getElevationGain() { return elevationGain; }

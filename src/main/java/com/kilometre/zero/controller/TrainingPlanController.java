@@ -1,7 +1,7 @@
 package com.kilometre.zero.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +54,23 @@ public class TrainingPlanController {
 		List<TrainingPlanResponse> plans = trainingPlanService.getAllPlans(athleteId);
 
 	    return ResponseEntity.ok(plans);
+	}
+	
+	@GetMapping("/getPlanById")
+	public ResponseEntity<TrainingPlanResponse> getPlanById(@RequestHeader("Authorization") String authorizationHeader, @RequestParam String planId) {
+
+		String jwt = authorizationHeader.replace("Bearer ", "");
+		Jwt decodedJwt = jwtDecoder.decode(jwt);
+		Long athleteId = decodedJwt.getClaim("athleteId");
+		
+		TrainingPlanResponse plan = trainingPlanService.getPlanById(UUID.fromString(planId), athleteId);
+		
+		// si plan est null, c'est que le planId passé en paramètre est random
+		if (plan == null) {
+			// TODO
+			// return error
+		}
+	    return ResponseEntity.ok(plan);
 	}
 
 }

@@ -5,25 +5,6 @@ import com.kilometre.zero.dto.TrainingPlanResponse;
 import com.kilometre.zero.entities.TrainingPlan;
 
 public class TrainingPlanMapper {
-
-//    public static TrainingPlan toEntity(
-//            TrainingPlanRequest dto,
-//            Long athleteId
-//    ) {
-//        TrainingPlan plan = new TrainingPlan();
-//
-//        plan.setAthleteId(athleteId);
-//        plan.setName(dto.getName());
-//        plan.setType(dto.getType());
-//        plan.setLocation(dto.getLocation());
-//        plan.setFitnessGoal(dto.getFitnessGoal());
-//        plan.setDistanceKm(dto.getDistanceKm());
-//        plan.setElevationGain(dto.getElevationGain());
-//        plan.setStartDate(dto.getStartDate());
-//        plan.setEndDate(dto.getEndDate());
-//
-//        return plan;
-//    }
 	
 	private TrainingPlanMapper() {
 
@@ -39,6 +20,7 @@ public class TrainingPlanMapper {
         plan.setAthleteId(athleteId);
         plan.setName(dto.getName());
         plan.setType(dto.getType());
+        plan.setGoal(dto.getGoal());
         plan.setLocation(dto.getLocation());
         plan.setFitnessGoal(dto.getFitnessGoal());
         plan.setDistanceKm(dto.getDistanceKm());
@@ -56,6 +38,7 @@ public class TrainingPlanMapper {
         response.setPlanId(plan.getPlanId());
         response.setName(plan.getName());
         response.setType(plan.getType());
+        response.setGoal(plan.getGoal());
         response.setDistanceKm(plan.getDistanceKm());
         response.setElevationGain(plan.getElevationGain());
         response.setLocation(plan.getLocation());

@@ -29,10 +29,15 @@ public class SecurityConfig {
         	.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/login", "/oauth2/**", "/exchange_token", "/loginSuccess").permitAll()
+                // USER ENDPOINTS
                 .requestMatchers("/api/user/lastSync").permitAll()
+                // ACTIVITY ENDPOINTS
                 .requestMatchers("/api/activity/syncActivities").permitAll()
+                .requestMatchers("/api/activity/getActivitiesForPlanPeriod").permitAll()
+                // PLAN ENDPOINTS
                 .requestMatchers("/api/plan/createPlan").permitAll()
                 .requestMatchers("/api/plan/getAllPlans").permitAll()
+                .requestMatchers("/api/plan/getPlanById").permitAll()  
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth -> oauth

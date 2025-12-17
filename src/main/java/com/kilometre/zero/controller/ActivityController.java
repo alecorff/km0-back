@@ -1,6 +1,7 @@
 package com.kilometre.zero.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kilometre.zero.entities.Activity;
 import com.kilometre.zero.service.ActivityService;
 import com.kilometre.zero.service.UserService;
 
@@ -48,6 +50,18 @@ public class ActivityController {
       userService.updateLastSync(athleteId, lastSync);
 
       return ResponseEntity.ok(lastSync);
+  }
+  
+  @GetMapping("/getActivitiesForPlanPeriod")
+  public ResponseEntity<List<Activity>> getActivitiesForPlanPeriod(@RequestHeader("Authorization") String authorizationHeader, @RequestParam LocalDateTime startDate) {
+
+	  String jwt = authorizationHeader.replace("Bearer ", "");
+      Jwt decodedJwt = jwtDecoder.decode(jwt);
+      Long athleteId = decodedJwt.getClaim("athleteId");
+
+      List<Activity> activities = activityService.getActivitiesForPlanPeriod(athleteId, startDate);
+
+      return ResponseEntity.ok(activities);
   }
 
 }

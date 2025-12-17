@@ -31,6 +31,8 @@ public class TrainingPlan {
     @Enumerated(EnumType.STRING)
     private TrainingType type;
     
+    private String goal;
+    
     @Column(name = "distance_km")
     private String distanceKm;
     
@@ -62,6 +64,9 @@ public class TrainingPlan {
 	public TrainingType getType() { return type; }
 	public void setType(TrainingType type) { this.type = type; }
 
+	public String getGoal() { return goal; }
+	public void setGoal(String goal) { this.goal = goal; }
+	
 	public String getDistanceKm() { return distanceKm; }
 	public void setDistanceKm(String distanceKm) { this.distanceKm = distanceKm; }
 

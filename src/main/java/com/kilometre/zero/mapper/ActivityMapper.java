@@ -1,7 +1,8 @@
 package com.kilometre.zero.mapper;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 import org.springframework.stereotype.Service;
 
@@ -11,64 +12,89 @@ import com.kilometre.zero.entities.Activity;
 @Service
 public class ActivityMapper {
 
-    public Activity toEntity(StravaActivity dto, Long athleteId) {
-        Activity activity = new Activity();
+	public Activity toEntity(StravaActivity dto, Long athleteId) {
+		Activity activity = new Activity();
 
-        activity.setActivityId(dto.getId());
-        activity.setAthleteId(athleteId);
+		activity.setActivityId(dto.getId());
+		activity.setAthleteId(athleteId);
 
-        activity.setName(dto.getName());
-        activity.setDescription(dto.getDescription());
-        activity.setDistance(toString(dto.getDistance()));
+		activity.setName(dto.getName());
+		activity.setDescription(dto.getDescription());
+		activity.setDistance(metersToKm(dto.getDistance()));
 
-        activity.setMovingTime(secondsToLocalDateTime(dto.getMovingTime()));
+		activity.setMovingTime(dto.getMovingTime());
 
-        activity.setTotalElevationGain(toString(dto.getTotalElevationGain()));
-        activity.setSportType(dto.getSportType());
+		activity.setTotalElevationGain(toDouble(dto.getTotalElevationGain()));
+		activity.setSportType(dto.getSportType());
 
-        activity.setStartDateLocal(parseDate(dto.getStartDateLocal()));
+		activity.setStartDateLocal(parseDate(dto.getStartDateLocal()));
 
-        if (dto.getMap() != null) {
-            activity.setPolyline(dto.getMap().getSummary_polyline());
-        }
+		if (dto.getMap() != null) {
+			activity.setPolyline(dto.getMap().getSummary_polyline());
+		}
 
-        activity.setAverageSpeed(toString(dto.getAverageSpeed()));
-        activity.setMaxSpeed(toString(dto.getMaxSpeed()));
-        activity.setAverageCadence(toString(dto.getAverageCadence()));
-        activity.setAverageWatts(toString(dto.getAverageWatts()));
-        activity.setMaxWatts(toString(dto.getMaxWatts()));
-        activity.setWeightedAverageWatts(toString(dto.getWeightedAverageWatts()));
-        activity.setKilojoules(toString(dto.getKilojoules()));
+		activity.setAverageSpeed(speedToPace(dto.getAverageSpeed()));
+		activity.setMaxSpeed(speedToPace(dto.getMaxSpeed()));
 
-        activity.setAverageHeartrate(toString(dto.getAverageHeartrate()));
-        activity.setMaxHeartrate(toString(dto.getMaxHeartrate()));
-        activity.setElevHigh(toString(dto.getElevHigh()));
-        activity.setElevLow(toString(dto.getElevLow()));
+		activity.setAverageCadence(toDouble(dto.getAverageCadence()));
+		activity.setAverageWatts(toDouble(dto.getAverageWatts()));
+		activity.setMaxWatts(toDouble(dto.getMaxWatts()));
+		activity.setWeightedAverageWatts(toDouble(dto.getWeightedAverageWatts()));
+		activity.setKilojoules(toDouble(dto.getKilojoules()));
 
-        activity.setCalories(toString(dto.getCalories()));
+		activity.setAverageHeartrate(toDouble(dto.getAverageHeartrate()));
+		activity.setMaxHeartrate(toDouble(dto.getMaxHeartrate()));
+		activity.setElevHigh(toDouble(dto.getElevHigh()));
+		activity.setElevLow(toDouble(dto.getElevLow()));
 
-        if (dto.getGear() != null) {
-            activity.setGear(dto.getGear().getName());
-        }
+		activity.setCalories(toDouble(dto.getCalories()));
 
-        return activity;
-    }
+		if (dto.getGear() != null) {
+			activity.setGear(dto.getGear().getName());
+		}
 
-    /* ===== Helpers ===== */
-    private String toString(Number value) {
-        return value != null ? value.toString() : null;
-    }
+		return activity;
+	}
 
-    private LocalDateTime parseDate(String isoDate) {
-        return isoDate != null
-                ? LocalDateTime.parse(isoDate.replace("Z", ""))
-                : null;
-    }
+	/* ===== Helpers ===== */
+	/**
+	 * Convertit m/s → mm'ss"/km
+	 */
+	private String speedToPace(Double speedMetersPerSecond) {
+		if (speedMetersPerSecond == null || speedMetersPerSecond <= 0) {
+			return null;
+		}
 
-    private LocalDateTime secondsToLocalDateTime(Integer seconds) {
-        return seconds != null
-                ? LocalDateTime.ofEpochSecond(seconds, 0, ZoneOffset.UTC)
-                : null;
-    }
+		// secondes par km
+		double secondsPerKm = 1000.0 / speedMetersPerSecond;
+
+		int minutes = (int) (secondsPerKm / 60);
+		int seconds = (int) Math.round(secondsPerKm % 60);
+
+		// gestion des arrondis type 7'60"
+		if (seconds == 60) {
+			minutes++;
+			seconds = 0;
+		}
+
+		return String.format("%d'%02d\"/km", minutes, seconds);
+	}
+
+	private LocalDateTime parseDate(String isoDate) {
+		return isoDate != null ? LocalDateTime.parse(isoDate.replace("Z", "")) : null;
+	}
+
+	private Double metersToKm(Double meters) {
+		if (meters == null)
+			return null;
+		return round(meters / 1000.0, 2);
+	}
+
+	private Double round(double value, int scale) {
+		return BigDecimal.valueOf(value).setScale(scale, RoundingMode.HALF_UP).doubleValue();
+	}
+
+	private Double toDouble(Number value) {
+		return value != null ? value.doubleValue() : null;
+	}
 }
-

@@ -1,6 +1,7 @@
 package com.kilometre.zero.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -27,10 +28,17 @@ public class TrainingPlanService {
     }
     
     public List<TrainingPlanResponse> getAllPlans(Long athleteId) {
-
         List<TrainingPlan> plans = repository.findAllByAthleteId(athleteId);
-
         return plans.stream().map(TrainingPlanMapper::toResponse).toList();
+    }
+    
+    public TrainingPlanResponse getPlanById(UUID planId, Long athleteId) {
+        TrainingPlan plan = repository.findByPlanId(planId);
+        
+        if (plan.getAthleteId() == athleteId) {
+        	return null;
+        }
+        return TrainingPlanMapper.toResponse(plan);
     }
 
 }
