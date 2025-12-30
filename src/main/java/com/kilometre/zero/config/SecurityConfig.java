@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/plan/getPlanById").permitAll()
                 // PLANNED ACTIVITY ENDPOINTS
                 .requestMatchers("/api/planned-activity/create").permitAll()
+                .requestMatchers("/api/planned-activity/getPlannedActivitiesForPlan").permitAll()
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth -> oauth
