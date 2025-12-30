@@ -3,8 +3,13 @@ package com.kilometre.zero.entities;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import org.hibernate.annotations.Type;
+
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -13,6 +18,7 @@ import jakarta.persistence.Table;
 public class PlannedActivity {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "planned_activity_id")
     private Long plannedActivityId;
 
@@ -26,16 +32,17 @@ public class PlannedActivity {
     private LocalDate scheduledDate;
 
     @Column(columnDefinition = "TEXT")
-    private String objective;
+    private String name;
+    
+    @Type(JsonBinaryType.class)
+    @Column(name = "steps_json", columnDefinition = "jsonb")
+    private Object stepsJson;
 
     @Column(name = "planned_duration_min")
     private Integer plannedDurationMin;
 
     @Column(name = "planned_distance_km")
     private Double plannedDistanceKm;
-
-    @Column(name = "planned_elevation_gain")
-    private Integer plannedElevationGain;
 
     @Column(name = "session_type")
     private String sessionType; 
@@ -60,17 +67,17 @@ public class PlannedActivity {
 	public LocalDate getScheduledDate() { return scheduledDate; }
 	public void setScheduledDate(LocalDate scheduledDate) { this.scheduledDate = scheduledDate; }
 
-	public String getObjective() { return objective; }
-	public void setObjective(String objective) { this.objective = objective; }
+	public String getName() { return name; }
+	public void setName(String name) { this.name = name; }
 
+	public Object getStepsJson() { return stepsJson; }
+	public void setStepsJson(Object stepsJson) { this.stepsJson = stepsJson; }
+	
 	public Integer getPlannedDurationMin() { return plannedDurationMin; }
 	public void setPlannedDurationMin(Integer plannedDurationMin) { this.plannedDurationMin = plannedDurationMin; }
 
 	public Double getPlannedDistanceKm() { return plannedDistanceKm; }
 	public void setPlannedDistanceKm(Double plannedDistanceKm) { this.plannedDistanceKm = plannedDistanceKm; }
-
-	public Integer getPlannedElevationGain() { return plannedElevationGain; }
-	public void setPlannedElevationGain(Integer plannedElevationGain) { this.plannedElevationGain = plannedElevationGain; }
 
 	public String getSessionType() { return sessionType; }
 	public void setSessionType(String sessionType) { this.sessionType = sessionType; }

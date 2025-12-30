@@ -78,6 +78,12 @@ public class Activity {
     
     @Column(name = "session_type")
     private String sessionType;
+    
+    private Double startLatitude;
+    
+    private Double startLongitude;
+    
+    
 
     // ======== Getters & Setters ========
     
@@ -151,5 +157,13 @@ public class Activity {
 	public void setGear(String gear) { this.gear = gear; }
 	
 	public String getSessionType() { return sessionType; }
-	public void setSessionType(String sessionType) { this.sessionType = sessionType; } 
+	public void setSessionType(String sessionType) { this.sessionType = sessionType; }
+	
+	public Double getStartLatitude() { return startLatitude; }
+	public void setStartLatitude(Double startLatitude) { this.startLatitude = startLatitude; }
+	
+	public Double getStartLongitude() { return startLongitude; }
+	public void setStartLongitude(Double startLongitude) { this.startLongitude = startLongitude; } 
+	
+	
 }

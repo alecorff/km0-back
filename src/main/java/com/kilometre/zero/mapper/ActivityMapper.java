@@ -52,6 +52,11 @@ public class ActivityMapper {
 		if (dto.getGear() != null) {
 			activity.setGear(dto.getGear().getName());
 		}
+		
+		if (dto.getStartLatLng() != null && dto.getStartLatLng().size() == 2) {
+		    activity.setStartLatitude(dto.getStartLatLng().get(0));
+		    activity.setStartLongitude(dto.getStartLatLng().get(1));
+		}
 
 		return activity;
 	}

@@ -1,66 +1,71 @@
 package com.kilometre.zero.dto;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class StravaActivity {
-	
+
 	private Long id;
-    private String name;
-    private String description;
+	private String name;
+	private String description;
 
-    private Double distance;
+	private Double distance;
 
-    @JsonProperty("moving_time")
-    private Integer movingTime;
+	@JsonProperty("moving_time")
+	private Integer movingTime;
 
-    @JsonProperty("total_elevation_gain")
-    private Double totalElevationGain;
+	@JsonProperty("total_elevation_gain")
+	private Double totalElevationGain;
 
-    @JsonProperty("sport_type")
-    private String sportType;
+	@JsonProperty("sport_type")
+	private String sportType;
 
-    @JsonProperty("start_date_local")
-    private String startDateLocal;
+	@JsonProperty("start_date_local")
+	private String startDateLocal;
 
-    private Map map;
+	private Map map;
 
-    @JsonProperty("average_speed")
-    private Double averageSpeed;
+	@JsonProperty("average_speed")
+	private Double averageSpeed;
 
-    @JsonProperty("max_speed")
-    private Double maxSpeed;
+	@JsonProperty("max_speed")
+	private Double maxSpeed;
 
-    @JsonProperty("average_cadence")
-    private Double averageCadence;
+	@JsonProperty("average_cadence")
+	private Double averageCadence;
 
-    @JsonProperty("average_watts")
-    private Double averageWatts;
+	@JsonProperty("average_watts")
+	private Double averageWatts;
 
-    @JsonProperty("max_watts")
-    private Double maxWatts;
+	@JsonProperty("max_watts")
+	private Double maxWatts;
 
-    @JsonProperty("weighted_average_watts")
-    private Double weightedAverageWatts;
+	@JsonProperty("weighted_average_watts")
+	private Double weightedAverageWatts;
 
-    private Double kilojoules;
+	private Double kilojoules;
 
-    @JsonProperty("average_heartrate")
-    private Double averageHeartrate;
+	@JsonProperty("average_heartrate")
+	private Double averageHeartrate;
 
-    @JsonProperty("max_heartrate")
-    private Double maxHeartrate;
+	@JsonProperty("max_heartrate")
+	private Double maxHeartrate;
 
-    @JsonProperty("elev_high")
-    private Double elevHigh;
+	@JsonProperty("elev_high")
+	private Double elevHigh;
 
-    @JsonProperty("elev_low")
-    private Double elevLow;
+	@JsonProperty("elev_low")
+	private Double elevLow;
 
-    private Double calories;
+	private Double calories;
 
-    private Gear gear;
-    
-    // ======== Getters & Setters ========
+	private Gear gear;
+
+	@JsonProperty("start_latlng")
+	private List<Double> startLatLng;
+
+	// ======== Getters & Setters ========
 
 	public Long getId() {
 		return id;
@@ -238,4 +243,11 @@ public class StravaActivity {
 		this.gear = gear;
 	}
 
+	public List<Double> getStartLatLng() {
+		return startLatLng;
+	}
+
+	public void setStartLatLng(List<Double> startLatLng) {
+		this.startLatLng = startLatLng;
+	}
 }

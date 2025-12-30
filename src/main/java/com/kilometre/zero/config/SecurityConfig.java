@@ -37,7 +37,9 @@ public class SecurityConfig {
                 // PLAN ENDPOINTS
                 .requestMatchers("/api/plan/createPlan").permitAll()
                 .requestMatchers("/api/plan/getAllPlans").permitAll()
-                .requestMatchers("/api/plan/getPlanById").permitAll()  
+                .requestMatchers("/api/plan/getPlanById").permitAll()
+                // PLANNED ACTIVITY ENDPOINTS
+                .requestMatchers("/api/planned-activity/create").permitAll()
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth -> oauth
