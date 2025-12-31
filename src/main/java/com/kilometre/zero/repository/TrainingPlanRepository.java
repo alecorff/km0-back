@@ -1,6 +1,7 @@
 package com.kilometre.zero.repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,6 +12,6 @@ public interface TrainingPlanRepository extends JpaRepository<TrainingPlan, Long
 	
 	List<TrainingPlan> findAllByAthleteId(Long athleteId);
 	
-	TrainingPlan findByPlanId(UUID athleteId);
+	Optional<TrainingPlan> findByPlanIdAndAthleteId(UUID planId, Long athleteId);
 
 }

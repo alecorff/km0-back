@@ -65,11 +65,6 @@ public class TrainingPlanController {
 		
 		TrainingPlanResponse plan = trainingPlanService.getPlanById(UUID.fromString(planId), athleteId);
 		
-		// si plan est null, c'est que le planId passé en paramètre est random
-		if (plan == null) {
-			// TODO
-			// return error
-		}
 	    return ResponseEntity.ok(plan);
 	}
 

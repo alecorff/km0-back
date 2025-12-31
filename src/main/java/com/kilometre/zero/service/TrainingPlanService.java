@@ -3,7 +3,9 @@ package com.kilometre.zero.service;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.kilometre.zero.dto.TrainingPlanRequest;
 import com.kilometre.zero.dto.TrainingPlanResponse;
@@ -33,12 +35,12 @@ public class TrainingPlanService {
     }
     
     public TrainingPlanResponse getPlanById(UUID planId, Long athleteId) {
-        TrainingPlan plan = repository.findByPlanId(planId);
         
-        if (plan.getAthleteId() == athleteId) {
-        	return null;
-        }
-        return TrainingPlanMapper.toResponse(plan);
+        return repository
+                .findByPlanIdAndAthleteId(planId, athleteId)
+                .map(TrainingPlanMapper::toResponse)
+                .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "plan_not_found"));
     }
 
 }
