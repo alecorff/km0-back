@@ -1,6 +1,7 @@
 package com.kilometre.zero.service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -141,9 +142,10 @@ public class ActivityService {
     	return RUNNING_TYPES.contains(dto.getSportType());
     }
 	
-	public List<Activity> getActivitiesForPlanPeriod(Long athleteId, LocalDateTime planStartDate) {
-        LocalDateTime now = LocalDateTime.now();
-        return activityRepository.findByAthleteIdAndStartDateLocalBetween(athleteId, planStartDate, now);
+	public List<Activity> getActivitiesForPlanPeriod(Long athleteId, LocalDate planStartDate) {
+		LocalDateTime planStartDateTime = planStartDate.atStartOfDay();
+		LocalDateTime now = LocalDateTime.now();
+        return activityRepository.findByAthleteIdAndStartDateLocalBetween(athleteId, planStartDateTime, now);
     }
 
 

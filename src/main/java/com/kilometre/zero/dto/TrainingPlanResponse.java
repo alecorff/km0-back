@@ -1,6 +1,6 @@
 package com.kilometre.zero.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class TrainingPlanResponse {
@@ -13,8 +13,8 @@ public class TrainingPlanResponse {
     private String elevationGain;
     private String location;
     private String fitnessGoal;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     // ===== Getters & Setters =====
 
@@ -42,10 +42,10 @@ public class TrainingPlanResponse {
     public String getFitnessGoal() { return fitnessGoal; }
     public void setFitnessGoal(String fitnessGoal) { this.fitnessGoal = fitnessGoal; }
 
-    public LocalDateTime getStartDate() { return startDate; }
-    public void setStartDate(LocalDateTime startDate) { this.startDate = startDate; }
+    public LocalDate getStartDate() { return startDate; }
+    public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
 
-    public LocalDateTime getEndDate() { return endDate; }
-    public void setEndDate(LocalDateTime endDate) { this.endDate = endDate; }
+    public LocalDate getEndDate() { return endDate; }
+    public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
 
 }

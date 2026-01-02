@@ -1,6 +1,6 @@
 package com.kilometre.zero.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,10 +24,10 @@ public class TrainingPlanRequest {
     private String fitnessGoal;
 
     @NotNull
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @NotNull
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     // ===== Getters & Setters =====
 
@@ -52,9 +52,9 @@ public class TrainingPlanRequest {
     public String getFitnessGoal() { return fitnessGoal; }
     public void setFitnessGoal(String fitnessGoal) { this.fitnessGoal = fitnessGoal; }
 
-    public LocalDateTime getStartDate() { return startDate; }
-    public void setStartDate(LocalDateTime startDate) { this.startDate = startDate; }
+    public LocalDate getStartDate() { return startDate; }
+    public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
 
-    public LocalDateTime getEndDate() { return endDate; }
-    public void setEndDate(LocalDateTime endDate) { this.endDate = endDate; }
+    public LocalDate getEndDate() { return endDate; }
+    public void setEndDate(LocalDate endDate) { this.endDate = endDate; }
 }

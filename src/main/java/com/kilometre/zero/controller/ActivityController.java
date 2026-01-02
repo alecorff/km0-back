@@ -1,5 +1,6 @@
 package com.kilometre.zero.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class ActivityController {
   }
   
   @GetMapping("/getActivitiesForPlanPeriod")
-  public ResponseEntity<List<Activity>> getActivitiesForPlanPeriod(@RequestHeader("Authorization") String authorizationHeader, @RequestParam LocalDateTime startDate) {
+  public ResponseEntity<List<Activity>> getActivitiesForPlanPeriod(@RequestHeader("Authorization") String authorizationHeader, @RequestParam LocalDate startDate) {
 
 	  String jwt = authorizationHeader.replace("Bearer ", "");
       Jwt decodedJwt = jwtDecoder.decode(jwt);

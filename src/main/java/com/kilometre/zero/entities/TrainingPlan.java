@@ -1,6 +1,6 @@
 package com.kilometre.zero.entities;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 import com.kilometre.zero.dto.TrainingType;
@@ -45,10 +45,10 @@ public class TrainingPlan {
     private String fitnessGoal;
 
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
     
     // ======== Getters & Setters ========
 
@@ -79,10 +79,10 @@ public class TrainingPlan {
 	public String getFitnessGoal() { return fitnessGoal; }
 	public void setFitnessGoal(String fitnessGoal) { this.fitnessGoal = fitnessGoal; }
 
-	public LocalDateTime getStartDate() { return startDate; }
-	public void setStartDate(LocalDateTime startDate) { this.startDate = startDate; }
+	public LocalDate getStartDate() { return startDate; }
+	public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
 
-	public LocalDateTime getEndDate() { return endDate; }
-	public void setEndDate(LocalDateTime endDate) { this.endDate = endDate; }    
+	public LocalDate getEndDate() { return endDate; }
+	public void setEndDate(LocalDate endDate) { this.endDate = endDate; }    
 
 }
