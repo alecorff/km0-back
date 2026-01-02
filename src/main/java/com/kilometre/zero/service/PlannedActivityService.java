@@ -46,5 +46,30 @@ public class PlannedActivityService {
 	public List<PlannedActivity> getPlannedActivitiesForPlan(UUID planId, Long athleteId) {
 		return repository.findByPlanIdAndAthleteId(planId, athleteId);
 	}
+	
+
+	public PlannedActivity updatePlannedActivity(Long id, PlannedActivityDto request, Long athleteId) {
+
+	    PlannedActivity activity = repository.findById(id).orElseThrow(() -> new RuntimeException("PlannedActivity not found"));
+
+	    if (!activity.getAthleteId().equals(athleteId)) {
+	        throw new RuntimeException("Forbidden");
+	    }
+
+	    if ("DONE".equals(activity.getStatus())) {
+	        throw new RuntimeException("Cannot edit a completed activity");
+	    }
+
+
+	    activity.setScheduledDate(request.getScheduledDate());
+	    activity.setName(request.getName());
+	    activity.setSessionType(request.getSessionType());
+	    activity.setPlannedDistanceKm(request.getPlannedDistanceKm());
+	    activity.setPlannedDurationMin(request.getPlannedDurationMin());
+	    activity.setStepsJson(request.getStepsJson());
+
+	    return repository.save(activity);
+	}
+
 
 }

@@ -51,6 +51,7 @@ public class SecurityConfig {
                 // PLANNED ACTIVITY ENDPOINTS
                 .requestMatchers("/api/planned-activity/create").permitAll()
                 .requestMatchers("/api/planned-activity/getPlannedActivitiesForPlan").permitAll()
+                .requestMatchers("/api/planned-activity/update/**").permitAll()
                 .anyRequest().authenticated()
             )
             .exceptionHandling(ex -> ex

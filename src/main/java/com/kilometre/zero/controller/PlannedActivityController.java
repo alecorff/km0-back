@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +45,19 @@ public class PlannedActivityController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedActivity);
 		
 	}
+	
+	@PutMapping("/update/{id}")
+	public ResponseEntity<PlannedActivity> updatePlannedActivity(@RequestHeader("Authorization") String authorizationHeader, @PathVariable Long id, @RequestBody PlannedActivityDto dto) {
+	    
+		String jwt = authorizationHeader.replace("Bearer ", "");
+	    Jwt decodedJwt = jwtDecoder.decode(jwt);
+	    Long athleteId = decodedJwt.getClaim("athleteId");
+
+	    PlannedActivity updated = plannedActivityService.updatePlannedActivity(id, dto, athleteId);
+
+	    return ResponseEntity.ok(updated);
+	}
+
 	
 	@GetMapping("/getPlannedActivitiesForPlan")
 	public ResponseEntity<List<PlannedActivity>> getPlannedActivitiesForPlan(@RequestHeader("Authorization") String authorizationHeader, @RequestParam String planId) {
