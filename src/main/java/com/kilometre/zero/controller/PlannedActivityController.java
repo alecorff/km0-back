@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kilometre.zero.dto.LinkPlannedActivityDto;
 import com.kilometre.zero.dto.PlannedActivityDto;
 import com.kilometre.zero.entities.PlannedActivity;
 import com.kilometre.zero.service.PlannedActivityService;
@@ -69,6 +70,18 @@ public class PlannedActivityController {
 		List<PlannedActivity> plannedActivities = plannedActivityService.getPlannedActivitiesForPlan(UUID.fromString(planId), athleteId);
 		
 	    return ResponseEntity.ok(plannedActivities);
+	}
+	
+	@PostMapping("/linkActivity")
+	public ResponseEntity<PlannedActivity> linkPlannedActivity(@RequestHeader("Authorization") String authorizationHeader, @RequestParam Long activityId, @RequestBody LinkPlannedActivityDto dto) {
+
+		String jwt = authorizationHeader.replace("Bearer ", "");
+		Jwt decodedJwt = jwtDecoder.decode(jwt);
+		Long athleteId = decodedJwt.getClaim("athleteId");
+
+		plannedActivityService.linkPlannedActivity(dto, activityId, athleteId);
+
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
 }

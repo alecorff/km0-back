@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.kilometre.zero.dto.LinkPlannedActivityDto;
 import com.kilometre.zero.dto.PlannedActivityDto;
 import com.kilometre.zero.entities.PlannedActivity;
 import com.kilometre.zero.repository.PlannedActivityRepository;
@@ -14,9 +15,11 @@ import com.kilometre.zero.repository.PlannedActivityRepository;
 public class PlannedActivityService {
 
 	private final PlannedActivityRepository repository;
+	private final ActivityService activityService;
 
-	public PlannedActivityService(PlannedActivityRepository repository) {
+	public PlannedActivityService(PlannedActivityRepository repository, ActivityService activityService) {
 		this.repository = repository;
+		this.activityService = activityService;
 	}
 
 	public ResponseEntity<PlannedActivity> createPlannedActivity(PlannedActivityDto request, Long athleteId) {
@@ -69,4 +72,18 @@ public class PlannedActivityService {
 
 		return repository.save(activity);
 	}
+	
+	public void linkPlannedActivity(LinkPlannedActivityDto dto, Long activityId, Long athleteId) {
+        // Récupérer la séance planifiée
+        PlannedActivity planned = repository.findById(dto.getPlannedActivityId())
+                .orElseThrow(() -> new RuntimeException("planned_activity_not_found"));
+
+        // Mettre à jour la séance planifiée
+        planned.setActivityId(activityId);
+        planned.setStatus("DONE");
+        repository.save(planned);
+
+        // Mettre à jour la séance réelle
+        activityService.updateSessionType(activityId, dto.getSessionType(), athleteId);
+    }
 }

@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public class PlannedActivityDto {
 	
+	private Long plannedActivityId;
 	private UUID planId;
     private Long athleteId;
     private LocalDate scheduledDate;
@@ -18,6 +19,12 @@ public class PlannedActivityDto {
     private String status;
     
     // ======== Getters & Setters ========
+    public Long getPlannedActivityId() {
+		return plannedActivityId;
+	}
+	public void setPlannedActivityId(Long plannedActivityId) {
+		this.plannedActivityId = plannedActivityId;
+	}
     
 	public UUID getPlanId() {
 		return planId;

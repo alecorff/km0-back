@@ -52,6 +52,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/planned-activity/create").permitAll()
                 .requestMatchers("/api/planned-activity/getPlannedActivitiesForPlan").permitAll()
                 .requestMatchers("/api/planned-activity/update/**").permitAll()
+                .requestMatchers("/api/planned-activity/linkActivity").permitAll()
                 .anyRequest().authenticated()
             )
             .exceptionHandling(ex -> ex

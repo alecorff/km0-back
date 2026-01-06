@@ -148,5 +148,16 @@ public class ActivityService {
         return activityRepository.findByAthleteIdAndStartDateLocalBetween(athleteId, planStartDateTime, now);
     }
 
+	public void updateSessionType(Long activityId, String sessionType, Long athleteId) {
+        Activity activity = activityRepository.findById(activityId)
+                .orElseThrow(() -> new RuntimeException("activity_not_found"));
+        
+        if (!activity.getAthleteId().equals(athleteId)) {
+			throw new RuntimeException("forbidden_activity");
+		}
+
+        activity.setSessionType(sessionType);
+        activityRepository.save(activity);
+    }
 
 }
