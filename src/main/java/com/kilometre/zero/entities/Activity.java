@@ -17,6 +17,9 @@ public class Activity {
 	
     @Column(name = "athlete_id")
     private Long athleteId;
+    
+    @Column(name = "planned_activity_id")
+    private Long plannedActivityId;
 
     private String name;
     
@@ -92,7 +95,10 @@ public class Activity {
 
 	public Long getAthleteId() { return athleteId; }
 	public void setAthleteId(Long athleteId) { this.athleteId = athleteId; }
-
+	
+	public Long getPlannedActivityId() { return plannedActivityId; }
+	public void setPlannedActivityId(Long plannedActivityId) { this.plannedActivityId = plannedActivityId; }
+	
 	public String getName() { return name; }
 	public void setName(String name) { this.name = name; }
 

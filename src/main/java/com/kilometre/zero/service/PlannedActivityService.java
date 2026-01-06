@@ -84,6 +84,6 @@ public class PlannedActivityService {
         repository.save(planned);
 
         // Mettre à jour la séance réelle
-        activityService.updateSessionType(activityId, dto.getSessionType(), athleteId);
+        activityService.updateActivityToLink(activityId, dto, athleteId);
     }
 }

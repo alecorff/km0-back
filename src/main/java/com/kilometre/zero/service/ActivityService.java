@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.kilometre.zero.dto.LinkPlannedActivityDto;
 import com.kilometre.zero.dto.StravaActivity;
+import com.kilometre.zero.dto.UpdateSessionDto;
 import com.kilometre.zero.entities.Activity;
 import com.kilometre.zero.mapper.ActivityMapper;
 import com.kilometre.zero.repository.ActivityRepository;
@@ -148,7 +150,7 @@ public class ActivityService {
         return activityRepository.findByAthleteIdAndStartDateLocalBetween(athleteId, planStartDateTime, now);
     }
 
-	public void updateSessionType(Long activityId, String sessionType, Long athleteId) {
+	public void updateActivityToLink(Long activityId, LinkPlannedActivityDto dto, Long athleteId) {
         Activity activity = activityRepository.findById(activityId)
                 .orElseThrow(() -> new RuntimeException("activity_not_found"));
         
@@ -156,7 +158,20 @@ public class ActivityService {
 			throw new RuntimeException("forbidden_activity");
 		}
 
-        activity.setSessionType(sessionType);
+        activity.setPlannedActivityId(dto.getPlannedActivityId());
+        activity.setSessionType(dto.getSessionType());
+        activityRepository.save(activity);
+    }
+	
+	public void updateSessionType(UpdateSessionDto dto, Long athleteId) {
+        Activity activity = activityRepository.findById(dto.getActivityId())
+                .orElseThrow(() -> new RuntimeException("activity_not_found"));
+        
+        if (!activity.getAthleteId().equals(athleteId)) {
+			throw new RuntimeException("forbidden_activity");
+		}
+
+        activity.setSessionType(dto.getSessionType());
         activityRepository.save(activity);
     }
 

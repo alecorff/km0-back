@@ -8,11 +8,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kilometre.zero.dto.UpdateSessionDto;
 import com.kilometre.zero.entities.Activity;
 import com.kilometre.zero.service.ActivityService;
 import com.kilometre.zero.service.UserService;
@@ -21,48 +24,63 @@ import com.kilometre.zero.service.UserService;
 @RequestMapping("/api/activity")
 public class ActivityController {
 
-  private final ActivityService activityService;	
-  private final UserService userService;
-  private final JwtDecoder jwtDecoder;
+	private final ActivityService activityService;
+	private final UserService userService;
+	private final JwtDecoder jwtDecoder;
 
-  public ActivityController(ActivityService activityService, UserService userService, JwtDecoder jwtDecoder) {
-	  this.activityService = activityService;
-	  this.userService = userService;
-      this.jwtDecoder = jwtDecoder;
-  }
+	public ActivityController(ActivityService activityService, UserService userService, JwtDecoder jwtDecoder) {
+		this.activityService = activityService;
+		this.userService = userService;
+		this.jwtDecoder = jwtDecoder;
+	}
 
-  @GetMapping("/syncActivities")
-  public ResponseEntity<LocalDateTime> syncAllActivities(@RequestHeader("Authorization") String authorizationHeader, @RequestParam(required = false) LocalDateTime lastSync) {
+	@GetMapping("/syncActivities")
+	public ResponseEntity<LocalDateTime> syncAllActivities(@RequestHeader("Authorization") String authorizationHeader,
+			@RequestParam(required = false) LocalDateTime lastSync) {
 
-	  String jwt = authorizationHeader.replace("Bearer ", "");
-      Jwt decodedJwt = jwtDecoder.decode(jwt);
-      Long athleteId = decodedJwt.getClaim("athleteId");
-      String accessToken = userService.getAccessTokenByAthleteId(athleteId);
+		String jwt = authorizationHeader.replace("Bearer ", "");
+		Jwt decodedJwt = jwtDecoder.decode(jwt);
+		Long athleteId = decodedJwt.getClaim("athleteId");
+		String accessToken = userService.getAccessTokenByAthleteId(athleteId);
 
-      // Première synchronisation
-      if (lastSync == null) {
-    	  activityService.syncAllActivities(accessToken, athleteId);
-      } else {
-    	  activityService.syncLastActivities(accessToken, athleteId, lastSync);
-      }
-      
-      
-      lastSync = LocalDateTime.now();
-      userService.updateLastSync(athleteId, lastSync);
+		// Première synchronisation
+		if (lastSync == null) {
+			activityService.syncAllActivities(accessToken, athleteId);
+		} else {
+			activityService.syncLastActivities(accessToken, athleteId, lastSync);
+		}
 
-      return ResponseEntity.ok(lastSync);
-  }
-  
-  @GetMapping("/getActivitiesForPlanPeriod")
-  public ResponseEntity<List<Activity>> getActivitiesForPlanPeriod(@RequestHeader("Authorization") String authorizationHeader, @RequestParam LocalDate startDate) {
+		lastSync = LocalDateTime.now();
+		userService.updateLastSync(athleteId, lastSync);
 
-	  String jwt = authorizationHeader.replace("Bearer ", "");
-      Jwt decodedJwt = jwtDecoder.decode(jwt);
-      Long athleteId = decodedJwt.getClaim("athleteId");
+		return ResponseEntity.ok(lastSync);
+	}
 
-      List<Activity> activities = activityService.getActivitiesForPlanPeriod(athleteId, startDate);
+	@GetMapping("/getActivitiesForPlanPeriod")
+	public ResponseEntity<List<Activity>> getActivitiesForPlanPeriod(
+			@RequestHeader("Authorization") String authorizationHeader, @RequestParam LocalDate startDate) {
 
-      return ResponseEntity.ok(activities);
-  }
+		String jwt = authorizationHeader.replace("Bearer ", "");
+		Jwt decodedJwt = jwtDecoder.decode(jwt);
+		Long athleteId = decodedJwt.getClaim("athleteId");
+
+		List<Activity> activities = activityService.getActivitiesForPlanPeriod(athleteId, startDate);
+
+		return ResponseEntity.ok(activities);
+	}
+
+	@PostMapping("/updateSessionType")
+	public ResponseEntity<Void> updateSessionType(
+			@RequestHeader("Authorization") String authorizationHeader,
+			@RequestBody UpdateSessionDto dto) {
+
+		String jwt = authorizationHeader.replace("Bearer ", "");
+		Jwt decodedJwt = jwtDecoder.decode(jwt);
+		Long athleteId = decodedJwt.getClaim("athleteId");
+
+		activityService.updateSessionType(dto, athleteId);
+
+		return ResponseEntity.noContent().build();
+	}
 
 }
