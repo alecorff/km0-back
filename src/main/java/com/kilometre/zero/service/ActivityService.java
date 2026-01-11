@@ -77,7 +77,13 @@ public class ActivityService {
                     continue;
                 }
             	
-                Activity activity = activityMapper.toEntity(dto, athleteId);
+                Activity activity = activityMapper.toEntity(dto, athleteId); 
+                
+                if (dto.getStartLatLng() != null && dto.getStartLatLng().size() == 2) {
+                    activity.setStartLatitude(dto.getStartLatLng().get(0));
+                    activity.setStartLongitude(dto.getStartLatLng().get(1));
+                }
+                
                 activityRepository.save(activity);
             }
 
@@ -126,6 +132,12 @@ public class ActivityService {
                 }
 
                 Activity activity = activityMapper.toEntity(dto, athleteId);
+                
+                if (dto.getStartLatLng() != null && dto.getStartLatLng().size() == 2) {
+                    activity.setStartLatitude(dto.getStartLatLng().get(0));
+                    activity.setStartLongitude(dto.getStartLatLng().get(1));
+                }
+                
                 activityRepository.save(activity);
             }
 

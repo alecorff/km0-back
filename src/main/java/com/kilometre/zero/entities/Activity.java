@@ -82,10 +82,15 @@ public class Activity {
     @Column(name = "session_type")
     private String sessionType;
     
+    @Column(name = "start_latitude")
     private Double startLatitude;
     
+    @Column(name = "start_longitude")
     private Double startLongitude;
     
+    private String city;
+    
+    private String country;  
     
 
     // ======== Getters & Setters ========
@@ -169,7 +174,12 @@ public class Activity {
 	public void setStartLatitude(Double startLatitude) { this.startLatitude = startLatitude; }
 	
 	public Double getStartLongitude() { return startLongitude; }
-	public void setStartLongitude(Double startLongitude) { this.startLongitude = startLongitude; } 
+	public void setStartLongitude(Double startLongitude) { this.startLongitude = startLongitude; }
 	
+	public String getCity() { return city; }
+	public void setCity(String city) { this.city = city; }
 	
+	public String getCountry() { return country; }
+	public void setCountry(String country) { this.country = country; }
+		
 }
