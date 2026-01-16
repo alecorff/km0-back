@@ -68,6 +68,18 @@ public class ActivityController {
 
 		return ResponseEntity.ok(activities);
 	}
+	
+	@GetMapping("/getAllActivities")
+	public ResponseEntity<List<Activity>> getAllActivities (@RequestHeader("Authorization") String authorizationHeader) {
+
+		String jwt = authorizationHeader.replace("Bearer ", "");
+		Jwt decodedJwt = jwtDecoder.decode(jwt);
+		Long athleteId = decodedJwt.getClaim("athleteId");
+
+		List<Activity> activities = activityService.getAllActivities(athleteId);
+
+		return ResponseEntity.ok(activities);
+	}
 
 	@PostMapping("/updateSessionType")
 	public ResponseEntity<Void> updateSessionType(

@@ -161,6 +161,10 @@ public class ActivityService {
 		LocalDateTime now = LocalDateTime.now();
         return activityRepository.findByAthleteIdAndStartDateLocalBetween(athleteId, planStartDateTime, now);
     }
+	
+	public List<Activity> getAllActivities(Long athleteId) {
+        return activityRepository.findByAthleteId(athleteId);
+    }
 
 	public void updateActivityToLink(Long activityId, LinkPlannedActivityDto dto, Long athleteId) {
         Activity activity = activityRepository.findById(activityId)

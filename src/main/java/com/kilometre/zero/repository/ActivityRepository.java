@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 import com.kilometre.zero.entities.Activity;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
+	
+	List<Activity> findByAthleteId(Long athleteId);
 
 	List<Activity> findByAthleteIdAndStartDateLocalBetween(Long athleteId, LocalDateTime startDate,
 			LocalDateTime endDate);

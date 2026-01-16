@@ -47,6 +47,7 @@ public class SecurityConfig {
                 // ACTIVITY ENDPOINTS
                 .requestMatchers("/api/activity/syncActivities").permitAll()
                 .requestMatchers("/api/activity/getActivitiesForPlanPeriod").permitAll()
+                .requestMatchers("/api/activity/getAllActivities").permitAll()
                 .requestMatchers("/api/activity/updateSessionType").permitAll()
                 // PLAN ENDPOINTS
                 .requestMatchers("/api/plan/createPlan").permitAll()
