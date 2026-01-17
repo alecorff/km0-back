@@ -3,18 +3,20 @@ FROM eclipse-temurin:21-jdk-alpine AS build
 
 WORKDIR /app
 
-# Copie uniquement ce qui est nécessaire pour le build
-COPY pom.xml .
 COPY mvnw .
+COPY pom.xml .
 COPY .mvn .mvn
 
-# Téléchargement des deps (cache Docker)
+# 🔑 rendre mvnw exécutable
+RUN chmod +x mvnw
+
+# Cache des dépendances
 RUN ./mvnw -B dependency:go-offline
 
-# Copie du code
+# Code source
 COPY src src
 
-# Build du JAR
+# Build
 RUN ./mvnw -B clean package -DskipTests
 
 # ===== STAGE 2 : RUNTIME =====
