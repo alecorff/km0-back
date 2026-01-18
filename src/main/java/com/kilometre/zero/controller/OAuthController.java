@@ -2,6 +2,7 @@ package com.kilometre.zero.controller;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,9 @@ import com.kilometre.zero.service.UserService;
 
 @RestController
 public class OAuthController {
+	
+	@Value("${app.frontend.base-url}")
+	private String frontendBaseUrl;
 
     private final StravaOAuthService stravaOAuthService;
     private final UserService userService;
@@ -37,7 +41,8 @@ public class OAuthController {
         String jwt = jwtService.generateToken(Map.of("athleteId", user.getAthleteId()));
         
         String redirectUrl = String.format(
-                "http://localhost:4200/loginSuccess?jwt=%s&firstname=%s&lastname=%s&avatar=%s",
+                "%s/loginSuccess?jwt=%s&firstname=%s&lastname=%s&avatar=%s",
+                frontendBaseUrl,
                 jwt,
                 user.getFirstname(),
                 user.getLastname(),

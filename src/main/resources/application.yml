@@ -1,5 +1,13 @@
 server:
   port: 8080
+  
+app:
+  cors:
+    allowed-origins: "http://localhost:4200"
+  frontend:
+    base-url: "http://localhost:4200"
+  backend:
+    base-url: "http://localhost:8080"    
 
 spring:
   datasource:
@@ -26,7 +34,7 @@ spring:
             client-authentication-scheme: form
             client-authentication-method: post
             client-name: Strava
-            redirect-uri: "http://localhost:8080/exchange_token"
+            redirect-uri: "${app.backend.base-url}/exchange_token"
             authorization-grant-type: authorization_code
         provider:
           strava:

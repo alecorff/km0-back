@@ -1,0 +1,15 @@
+app:
+  cors:
+    allowed-origins: "https://km0-front-prod.onrender.com"
+
+  frontend:
+    base-url: "https://km0-front-prod.onrender.com"
+
+  backend:
+    base-url: "https://km0-back-prod.onrender.com"
+
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
