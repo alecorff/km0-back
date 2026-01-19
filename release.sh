@@ -23,10 +23,37 @@ git pull $GIT_REMOTE develop
 
 # Get current version
 CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-BASE_VERSION=${CURRENT_VERSION%-SNAPSHOT}
 
-IFS='.' read -r MAJOR MINOR PATCH <<< "$BASE_VERSION"
+if [[ "$CURRENT_VERSION" != *-SNAPSHOT ]]; then
+  echo "Current version must be a SNAPSHOT"
+  exit 1
+fi
 
+RELEASE_VERSION=${CURRENT_VERSION%-SNAPSHOT}
+
+IFS='.' read -r MAJOR MINOR PATCH <<< "$RELEASE_VERSION"
+
+echo "Releasing version $RELEASE_VERSION"
+
+### ===== START RELEASE =====
+git flow release start "$RELEASE_VERSION"
+
+# Set release version
+mvn versions:set \
+  -DnewVersion="$RELEASE_VERSION" \
+  -DgenerateBackupPoms=false
+
+git commit -am "build(release): $RELEASE_VERSION"
+
+mvn clean package -DskipTests
+
+GIT_MERGE_AUTOEDIT=no git flow release finish \
+  -m "Release $RELEASE_VERSION" \
+  -T "$RELEASE_VERSION"
+
+git push $GIT_REMOTE refs/tags/"$RELEASE_VERSION"
+
+### ===== NEXT DEV VERSION =====
 case $TYPE in
   patch)
     PATCH=$((PATCH + 1))
@@ -38,39 +65,6 @@ case $TYPE in
   major)
     MAJOR=$((MAJOR + 1))
     MINOR=0
-    PATCH=0
-    ;;
-esac
-
-RELEASE_VERSION="$MAJOR.$MINOR.$PATCH"
-
-echo "Releasing version $RELEASE_VERSION"
-
-git flow release start "$RELEASE_VERSION"
-
-# Set release version
-export MAVEN_OPTS="--add-opens=java.base/java.lang=ALL-UNNAMED"
-mvn versions:set \
-  -DremoveSnapshot=true \
-  -DgenerateBackupPoms=false
-
-git commit -am "build(release): $RELEASE_VERSION"
-
-mvn clean package -DskipTests
-
-GIT_MERGE_AUTOEDIT=no git flow release finish -m "Release $RELEASE_VERSION" -T "$RELEASE_VERSION"
-
-git push $GIT_REMOTE refs/tags/"$RELEASE_VERSION"
-
-# Next dev version
-case $TYPE in
-  patch)
-    PATCH=$((PATCH + 1))
-    ;;
-  minor)
-    PATCH=0
-    ;;
-  major)
     PATCH=0
     ;;
 esac
