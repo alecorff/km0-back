@@ -44,9 +44,12 @@ echo "Releasing version $RELEASE_VERSION"
 git flow release start "$RELEASE_VERSION"
 
 # Set release version
+export MAVEN_OPTS="--add-opens=java.base/java.lang=ALL-UNNAMED"
 mvn versions:set \
   -DremoveSnapshot=true \
-  -DgenerateBackupPoms=false
+  -DgenerateBackupPoms=false \
+  --define "maven.compiler.source=21" \
+  --define "maven.compiler.target=21"
 
 git commit -am "build(release): $RELEASE_VERSION"
 
