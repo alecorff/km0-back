@@ -11,9 +11,9 @@ app:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5434/km0dev
-    username: admin
-    password: pB55v1Ks?AxB
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -26,8 +26,8 @@ spring:
       client:
         registration:
           strava:
-            client-id: 179949
-            client-secret: c60e34f786519935d4da649516af780ecec5b48a
+            client-id: ${STRAVA_CLIENT_ID}
+            client-secret: ${STRAVA_CLIENT_SECRET}
             scope: activity:read_all
             token-name: access_token
             authentication-scheme: query
