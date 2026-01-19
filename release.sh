@@ -8,6 +8,11 @@ if [[ "$TYPE" != "patch" && "$TYPE" != "minor" && "$TYPE" != "major" ]]; then
   exit 1
 fi
 
+### ===== CONFIG JAVA =====
+export JAVA_HOME="/c/Program Files/OpenJDK/jdk-21.0.8"
+export PATH="$JAVA_HOME/bin:$PATH"
+
+### ===== CONFIG GIT =====
 GIT_REMOTE=origin
 
 # Sync branches
@@ -47,9 +52,7 @@ git flow release start "$RELEASE_VERSION"
 export MAVEN_OPTS="--add-opens=java.base/java.lang=ALL-UNNAMED"
 mvn versions:set \
   -DremoveSnapshot=true \
-  -DgenerateBackupPoms=false \
-  --define "maven.compiler.source=21" \
-  --define "maven.compiler.target=21"
+  -DgenerateBackupPoms=false
 
 git commit -am "build(release): $RELEASE_VERSION"
 
