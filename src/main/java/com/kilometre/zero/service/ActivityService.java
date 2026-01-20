@@ -53,7 +53,7 @@ public class ActivityService {
             HttpEntity<Void> entity = new HttpEntity<>(headers);
 
             UriComponentsBuilder uriBuilder = UriComponentsBuilder
-                    .fromHttpUrl(STRAVA_ACTIVITIES_URL)
+                    .fromUriString(STRAVA_ACTIVITIES_URL)
                     .queryParam("page", page)
                     .queryParam("per_page", perPage);
 
@@ -106,7 +106,7 @@ public class ActivityService {
             HttpEntity<Void> entity = new HttpEntity<>(headers);
 
             UriComponentsBuilder uriBuilder = UriComponentsBuilder
-                    .fromHttpUrl(STRAVA_ACTIVITIES_URL)
+                    .fromUriString(STRAVA_ACTIVITIES_URL)
                     .queryParam("after", after)
                     .queryParam("page", page)
                     .queryParam("per_page", perPage);

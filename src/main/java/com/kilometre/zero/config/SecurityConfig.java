@@ -45,6 +45,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
             	.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/", "/login", "/oauth2/**", "/exchange_token", "/loginSuccess", "/error").permitAll()
+                // AUTH ENDPOINTS
+                .requestMatchers("/api/auth/hasValidSession").permitAll()
                 // USER ENDPOINTS
                 .requestMatchers("/api/user/lastSync").permitAll()
                 // ACTIVITY ENDPOINTS

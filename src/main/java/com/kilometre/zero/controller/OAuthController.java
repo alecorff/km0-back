@@ -3,7 +3,11 @@ package com.kilometre.zero.controller;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
@@ -24,11 +28,13 @@ public class OAuthController {
     private final StravaOAuthService stravaOAuthService;
     private final UserService userService;
     private final JwtService jwtService;
+    private final JwtDecoder jwtDecoder;
 
-    public OAuthController(StravaOAuthService stravaOAuthService, UserService userService, JwtService jwtService) {
+    public OAuthController(StravaOAuthService stravaOAuthService, UserService userService, JwtService jwtService, JwtDecoder jwtDecoder) {
         this.stravaOAuthService = stravaOAuthService;
         this.userService = userService;
         this.jwtService = jwtService;
+        this.jwtDecoder = jwtDecoder;
     }
 
     @GetMapping("/exchange_token")
@@ -50,5 +56,24 @@ public class OAuthController {
             );
             
         return new RedirectView(redirectUrl);
+    }
+    
+    @GetMapping("/api/auth/hasValidSession")
+    public ResponseEntity<Boolean> hasValidSession(@RequestHeader("Authorization") String authorizationHeader) {
+        
+    	if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            return ResponseEntity.ok(false);
+        }
+    	
+    	String jwt = authorizationHeader.replace("Bearer ", "");
+		Jwt decodedJwt = jwtDecoder.decode(jwt);
+		Long athleteId = decodedJwt.getClaim("athleteId");
+        boolean exists = userService.existsByAthleteId(athleteId);
+        if (!exists) return ResponseEntity.ok(false);
+
+        // Rafraîchir le token Strava si nécessaire
+        userService.getValidStravaAccessToken(athleteId);
+
+        return ResponseEntity.ok(true);
     }
 }
