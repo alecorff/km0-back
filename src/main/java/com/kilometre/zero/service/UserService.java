@@ -3,6 +3,7 @@ package com.kilometre.zero.service;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -90,5 +91,9 @@ public class UserService {
         }
 
         return user.getAccessToken();
+    }
+    
+    public List<User> getAllUsers() {
+    	return userRepository.findAll();
     }
 }
