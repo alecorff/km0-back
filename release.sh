@@ -29,10 +29,29 @@ if [[ "$CURRENT_VERSION" != *-SNAPSHOT ]]; then
   exit 1
 fi
 
-RELEASE_VERSION=${CURRENT_VERSION%-SNAPSHOT}
+BASE_VERSION=${CURRENT_VERSION%-SNAPSHOT}
+IFS='.' read -r MAJOR MINOR PATCH <<< "$BASE_VERSION"
 
-IFS='.' read -r MAJOR MINOR PATCH <<< "$RELEASE_VERSION"
+### ===== CALCULATE RELEASE VERSION =====
+case $TYPE in
+  patch)
+    RELEASE_MAJOR=$MAJOR
+    RELEASE_MINOR=$MINOR
+    RELEASE_PATCH=$PATCH
+    ;;
+  minor)
+    RELEASE_MAJOR=$MAJOR
+    RELEASE_MINOR=$((MINOR + 1))
+    RELEASE_PATCH=0
+    ;;
+  major)
+    RELEASE_MAJOR=$((MAJOR + 1))
+    RELEASE_MINOR=0
+    RELEASE_PATCH=0
+    ;;
+esac
 
+RELEASE_VERSION="$RELEASE_MAJOR.$RELEASE_MINOR.$RELEASE_PATCH"
 echo "Releasing version $RELEASE_VERSION"
 
 ### ===== START RELEASE =====
@@ -54,22 +73,8 @@ GIT_MERGE_AUTOEDIT=no git flow release finish \
 git push $GIT_REMOTE refs/tags/"$RELEASE_VERSION"
 
 ### ===== NEXT DEV VERSION =====
-case $TYPE in
-  patch)
-    PATCH=$((PATCH + 1))
-    ;;
-  minor)
-    MINOR=$((MINOR + 1))
-    PATCH=0
-    ;;
-  major)
-    MAJOR=$((MAJOR + 1))
-    MINOR=0
-    PATCH=0
-    ;;
-esac
-
-NEXT_VERSION="$MAJOR.$MINOR.$PATCH-SNAPSHOT"
+NEXT_PATCH=$((RELEASE_PATCH + 1))
+NEXT_VERSION="$RELEASE_MAJOR.$RELEASE_MINOR.$NEXT_PATCH-SNAPSHOT"
 
 mvn versions:set \
   -DnewVersion="$NEXT_VERSION" \
