@@ -53,7 +53,7 @@ public class ActivityService {
             HttpEntity<Void> entity = new HttpEntity<>(headers);
 
             UriComponentsBuilder uriBuilder = UriComponentsBuilder
-                    .fromHttpUrl(STRAVA_ACTIVITIES_URL)
+                    .fromUriString(STRAVA_ACTIVITIES_URL)
                     .queryParam("page", page)
                     .queryParam("per_page", perPage);
 
@@ -91,12 +91,13 @@ public class ActivityService {
         }
     }
     
-    public void syncLastActivities(String accessToken, Long athleteId, LocalDateTime lastSync) {
+    public boolean syncLastActivities(String accessToken, Long athleteId, LocalDateTime lastSync) {
 
         int page = 1;
         int perPage = 200;
-        
         int after = convert(lastSync);
+        
+        boolean hasUpdated = false;
 
         while (true) {
 
@@ -106,7 +107,7 @@ public class ActivityService {
             HttpEntity<Void> entity = new HttpEntity<>(headers);
 
             UriComponentsBuilder uriBuilder = UriComponentsBuilder
-                    .fromHttpUrl(STRAVA_ACTIVITIES_URL)
+                    .fromUriString(STRAVA_ACTIVITIES_URL)
                     .queryParam("after", after)
                     .queryParam("page", page)
                     .queryParam("per_page", perPage);
@@ -139,10 +140,13 @@ public class ActivityService {
                 }
                 
                 activityRepository.save(activity);
+                hasUpdated = true;
             }
 
             page++;
         }
+        
+        return hasUpdated;
     }
     
     private int convert(LocalDateTime lastSync) {

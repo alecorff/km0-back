@@ -22,26 +22,39 @@ public class StravaOAuthService {
 
 	@Value("${spring.security.oauth2.client.registration.strava.client-secret}")
 	private String clientSecret;
+	
+	private final RestTemplate restTemplate = new RestTemplate();
+    private static final String TOKEN_URL = "https://www.strava.com/oauth/token";
 
 	public StravaTokenResponse exchangeCodeForToken(String code) throws JsonProcessingException {
-		RestTemplate restTemplate = new RestTemplate();
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-		body.add("client_id", clientId);
-		body.add("client_secret", clientSecret);
-		body.add("code", code);
-		body.add("grant_type", "authorization_code");
+        body.add("client_id", clientId);
+        body.add("client_secret", clientSecret);
+        body.add("code", code);
+        body.add("grant_type", "authorization_code");
 
-		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
-
-		ResponseEntity<StravaTokenResponse> response = restTemplate.postForEntity(
-				"https://www.strava.com/oauth/token",
-				request, 
-				StravaTokenResponse.class);
-
-		return response.getBody();
+        return postForToken(body);
 	}
+	
+	public StravaTokenResponse refreshToken(String refreshToken) {
+		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("client_id", clientId);
+        body.add("client_secret", clientSecret);
+        body.add("grant_type", "refresh_token");
+        body.add("refresh_token", refreshToken);
+
+        return postForToken(body);
+	}
+	
+	private StravaTokenResponse postForToken(MultiValueMap<String, String> body) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
+
+        ResponseEntity<StravaTokenResponse> response =
+                restTemplate.postForEntity(TOKEN_URL, request, StravaTokenResponse.class);
+
+        return response.getBody();
+    }
 }

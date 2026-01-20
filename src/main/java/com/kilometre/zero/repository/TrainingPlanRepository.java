@@ -1,5 +1,6 @@
 package com.kilometre.zero.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -13,5 +14,7 @@ public interface TrainingPlanRepository extends JpaRepository<TrainingPlan, Long
 	List<TrainingPlan> findAllByAthleteId(Long athleteId);
 	
 	Optional<TrainingPlan> findByPlanIdAndAthleteId(UUID planId, Long athleteId);
+	
+	List<TrainingPlan> findByEndDate(LocalDate endDate);
 
 }

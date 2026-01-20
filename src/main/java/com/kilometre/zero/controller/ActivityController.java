@@ -41,7 +41,7 @@ public class ActivityController {
 		String jwt = authorizationHeader.replace("Bearer ", "");
 		Jwt decodedJwt = jwtDecoder.decode(jwt);
 		Long athleteId = decodedJwt.getClaim("athleteId");
-		String accessToken = userService.getAccessTokenByAthleteId(athleteId);
+		String accessToken = userService.getValidStravaAccessToken(athleteId);
 
 		// Première synchronisation
 		if (lastSync == null) {
