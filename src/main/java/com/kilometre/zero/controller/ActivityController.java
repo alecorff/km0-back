@@ -58,13 +58,13 @@ public class ActivityController {
 
 	@GetMapping("/getActivitiesForPlanPeriod")
 	public ResponseEntity<List<Activity>> getActivitiesForPlanPeriod(
-			@RequestHeader("Authorization") String authorizationHeader, @RequestParam LocalDate startDate) {
+			@RequestHeader("Authorization") String authorizationHeader, @RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
 
 		String jwt = authorizationHeader.replace("Bearer ", "");
 		Jwt decodedJwt = jwtDecoder.decode(jwt);
 		Long athleteId = decodedJwt.getClaim("athleteId");
 
-		List<Activity> activities = activityService.getActivitiesForPlanPeriod(athleteId, startDate);
+		List<Activity> activities = activityService.getActivitiesForPlanPeriod(athleteId, startDate, endDate);
 
 		return ResponseEntity.ok(activities);
 	}
