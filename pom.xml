@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.kilometre.zero</groupId>
 	<artifactId>dashboard</artifactId>
-	<version>1.2.1-SNAPSHOT</version>
+	<version>1.3.0</version>
 	<name>dashboard</name>
 	<description>Backend for Kilomètre Zéro Dashboard</description>
 	<url/>
