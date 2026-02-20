@@ -38,7 +38,18 @@ public class OAuthController {
     }
 
     @GetMapping("/exchange_token")
-    public RedirectView handleAuthorizationCode(@RequestParam String code) throws JsonProcessingException {
+    public RedirectView handleAuthorizationCode(@RequestParam(required = false) String code, @RequestParam(required = false) String error) throws JsonProcessingException {
+    	// Si l'utilisateur a annulé chez Strava
+        if (error != null) {
+            return new RedirectView(frontendBaseUrl);
+        }
+
+        // Sécurité supplémentaire
+        if (code == null) {
+            return new RedirectView(frontendBaseUrl);
+        }
+    	
+    	
     	StravaTokenResponse tokenResponse = stravaOAuthService.exchangeCodeForToken(code);
     	
     	// Stockage en base
